@@ -48,8 +48,9 @@ nano run_experiments.sh
   --stats_interval_seconds=60 \
   --db=/tmp/rocksdb-zstd-lvl2 \
   > dbbench-zstd-lvl2.txt
-과 같은 방식으로'compression_type'과 'min_level_to_compress'을 바꿔가면서 결과를 확인합니다.
+
 ```
+위와 같은 방식으로'compression_type'과 'min_level_to_compress'을 바꿔가면서 결과를 확인합니다.
 
 스크립트 실행:
 
