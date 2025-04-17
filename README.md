@@ -27,37 +27,42 @@ make static_lib db_bench
 
 ### 2. 벤치마크 스크립트 작성
 
-```bash
-nano run_experiments.sh
-```
-
-스크립트 내용 예시:
+`run_experiments.sh` 파일을 만들고 아래 내용을 입력합니다:
 
 ```bash
 #!/bin/bash
 
-# 압축 방식: zstd / snappy / none, 압축 시작 레벨: 0, 2, 4
-./db_bench \
-  --benchmarks=fillrandom \
-  --num=500000 \
-  --value_size=1000 \
-  --key_size=8 \
-  --compression_type=zstd \
-  --min_level_to_compress=2 \
-  --statistics=true \
-  --stats_interval_seconds=60 \
-  --db=/tmp/rocksdb-zstd-lvl2 \
-  > dbbench-zstd-lvl2.txt
+# 압축 방식과 압축 시작 레벨을 조합하여 RocksDB 성능 실험 자동화
+compression_types=("zstd" "snappy" "none")
+min_levels=(0 2 4)
 
+for comp in "${compression_types[@]}"; do
+  for lvl in "${min_levels[@]}"; do
+    echo "▶️ 실행 중: compression_type=$comp, min_level_to_compress=$lvl"
+
+    ./db_bench \
+      --benchmarks=fillrandom \
+      --num=500000 \
+      --value_size=1000 \
+      --key_size=8 \
+      --compression_type=$comp \
+      --min_level_to_compress=$lvl \
+      --statistics=true \
+      --stats_interval_seconds=60 \
+      --db=/tmp/rocksdb-${comp}-lvl${lvl} \
+      > dbbench-${comp}-lvl${lvl}.txt
+  done
+done
 ```
-위와 같은 방식으로'compression_type'과 'min_level_to_compress'을 바꿔가면서 결과를 확인합니다.
 
-스크립트 실행:
+### 3. 실행 권한 부여 및 실행
 
 ```bash
 chmod +x run_experiments.sh
 ./run_experiments.sh
 ```
+
+위 스크립트는 `compression_type`과 `min_level_to_compress`의 모든 조합에 대해 총 9번의 실험을 자동으로 수행하며, 각각의 결과를 파일로 저장합니다.
 
 ---
 
