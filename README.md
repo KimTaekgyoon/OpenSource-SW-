@@ -79,9 +79,9 @@ chmod +x run_experiments.sh
 
 ## 인사이트 요약
 
-- **공간 절약 효과(SA)는** `zstd > snappy > none` 순서로 확인되었음
-- **쓰기 처리량(Throughput)은** 압축 강도가 낮을수록 높았으며 `none > snappy > zstd`
-- **WAF는 모든 설정에서 1.02로 동일**, compaction 트리거 부족으로 실제 쓰기 증폭 차이는 크지 않았음
+- 공간 절약 효과(SA)는 `zstd > snappy > none` 순서로 확인되었음
+- 쓰기 처리량(Throughput)은 압축 강도가 낮을수록 높았으며 `none > snappy > zstd`
+- WAF는 모든 설정에서 1.02로 동일, compaction 트리거 부족으로 실제 쓰기 증폭 차이는 크지 않았음
 
 ---
 
